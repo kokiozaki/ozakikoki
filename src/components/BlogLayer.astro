@@ -4,6 +4,7 @@ import ColumnCard from '../components/ColumnCard';
 import Layout from '../layouts/Layout.astro'
 import { newtClient } from '../lib/newt'
 import type { Article } from '../lib/newt'
+import BtnA from "../components/BtnA";
 
 const { items: articles } = await newtClient.getContents<Article>({
   appUid: 'blog',
@@ -49,6 +50,10 @@ const { items: articles } = await newtClient.getContents<Article>({
 								</li>
 							))}
 						</ul>
+
+            <div class="u-align-c column__btn">
+              <BtnA text="一覧を見る" href="/blog/" />
+            </div>
           </div>
         </div>
       </div>
