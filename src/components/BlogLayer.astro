@@ -1,5 +1,6 @@
 ---
 import ColumnList from '../components/ColumnList';
+import ColumnCard from '../components/ColumnCard';
 import Layout from '../layouts/Layout.astro'
 import { newtClient } from '../lib/newt'
 import type { Article } from '../lib/newt'
@@ -7,6 +8,9 @@ import type { Article } from '../lib/newt'
 const { items: articles } = await newtClient.getContents<Article>({
   appUid: 'blog',
   modelUid: 'article',
+    query: {
+      limit: 6,
+    },
 })
 ---
 
@@ -36,8 +40,15 @@ const { items: articles } = await newtClient.getContents<Article>({
           <div class="xl-inner">
             <div class="u-mb-m">
             </div>	
-            <ColumnList data={articles} client:load />
-
+            <!-- <ColumnList data={articles} client:load /> -->
+            
+            <ul class="swiper-wrapper">
+							{articles.map((item) => (
+								<li class="swiper-slide column__card">
+									<ColumnCard data={item} />
+								</li>
+							))}
+						</ul>
           </div>
         </div>
       </div>
