@@ -1,0 +1,636 @@
+---
+import Footer from './Footer.astro';
+import Header from './Header.astro';
+import ServiceLayer from '../components/ServiceLayer.astro';
+import AboutLayer from '../components/AboutLayer.astro';
+import BlogLayer from '../components/BlogLayer.astro';
+import { ViewTransitions, slide } from 'astro:transitions';
+
+interface Props {
+    pageId: string;
+    title: string;
+    description: string;
+}
+
+const { pageId, title, description } = Astro.props;
+
+---
+
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={description} />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+        <ViewTransitions />
+
+        <!-- Open Graph tags -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:site_name" content={description} />
+        <meta property="og:url" content="" />
+        <meta property="og:description" content="" />
+        <meta property="og:image" content="" />
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Inter:wght@100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        
+        <!-- Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" />
+    </head>
+    <body data-pageId={pageId}>
+        <!-- 画面遷移アニメーション -->
+             <div class="transition-wrapper">
+                 {pageId !== 'top' && (
+                    <div class="stripes">
+                        <div class="stripeWrapper">
+                            <div class="stripe"></div>
+                            <div class="stripe"></div>
+                            <div class="stripe"></div>
+                            <div class="stripe"></div>
+                        </div>
+                    </div>
+                )}
+
+                {pageId == 'top' && (
+                    <div id="animation-container">
+                        <div class="top-half"></div>
+                        <div class="bottom-half"></div>
+                        <div class="line"></div>
+                    </div>
+                    <AboutLayer />
+                    <ServiceLayer />
+                    <BlogLayer />
+                )}
+     
+                 <div class="content-wrapper">
+                     <div id="background-animation-container">
+                         {[...Array(12)].map((_, i) => (
+                             <div class="ani-bubble" key={i}></div>
+                         ))}
+                     </div>
+                     <div class="header__hmbbtn">
+                        <div class="hmb-btn js-hmb-btn">
+                          <div class="hmb-btn__inner">
+                            <div class="hmb-btn__hmb">
+                              <span></span><span></span><span></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="menu-layer"></div>
+                      <div class="menu">
+                        <ul class="menu__list">
+                          <li><a href="#about">ABOUT<br><span>私について</span></a></li>
+                          <li><a href="#service">SERVICE<br><span>サービス</span></a></li>
+                          <li><a href="#blog">BLOG<br><span>ブログ</span></a></li>
+                          <li><a href="#contact">CONTACT<br><span>お問い合わせ</span></a></li>
+                        </ul>
+                      </div>
+                     <div class={`wrap wrap--${pageId}`}>
+                         <Header />
+                         <div id="luxy" class={`contents contents--${pageId}`}>
+                             <slot />
+                             <Footer />
+                         </div>
+                     </div>
+                 </div>
+             </div>
+    </body>
+</html>
+
+<style is:global lang="scss">
+    @import '../styles/vars.scss';
+    @import '../styles/html5doctor.scss';
+    @import '../styles/reset.scss';
+    @import '../styles/common.scss';
+
+    // Root styles
+    html {
+        scroll-behavior: smooth;
+        font-size: 10px;
+
+        @media screen and (width <= 1000px) {
+            font-size: 1vw;
+        }
+
+        @include max-screen($bp-sp) {
+            font-size: 2.6667vw;
+        }
+    }
+
+    body {
+        background: #E1E1E1;
+        font-size: 1.6rem;
+        font-family: "Noto Sans Japanese", "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+        line-height: 1.5;
+
+        @include max-screen($bp-sp) {
+            font-size: 1.4rem;
+        }
+    }
+
+    .no-scroll {
+        overflow: hidden;
+    }
+
+    #animation-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        z-index: 999;
+    }
+
+    .top-half, .bottom-half {
+        position: absolute;
+        width: 100%;
+        height: 50vh;
+        background-color: #ff9326;
+    }
+
+    .top-half {
+        top: 0;
+    }
+
+    .bottom-half {
+        bottom: 0;
+    }
+
+    .line {
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background-color: #fff;
+    }
+
+    .header__hmbbtn {
+        position: fixed;
+        top: 50%;
+        left: vw-pc(50);
+        transform: translate(0, -50%);
+        z-index: 998;
+        @include max-screen($bp-sp) {
+            top: 5%;
+            left: auto;
+            right: 5%;
+        }
+    }
+
+  .hmb-btn {
+		position: relative;
+		cursor: pointer;
+		height: vw-pc(18);
+		width: vw-pc(45);
+
+        @include max-screen($bp-sp) {
+			height: 1.4rem;
+			width: 2.5rem;
+		}
+
+		&__inner {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		&__hmb {
+			position: relative;
+			height: vw-pc(18);
+			width: vw-pc(45);
+
+			@include max-screen($bp-sp) {
+				height: 1.4rem;
+				width: 2.5rem;
+			}
+
+			span {
+				display: inline-block;
+				transition: all .5s;
+				/* アニメーションの設定 */
+				position: absolute;
+				left: 0;
+				height: 2px;
+				background: #000;
+				width: 0;
+
+				&:nth-of-type(1) {
+					top: 0;
+				}
+
+				&:nth-of-type(2) {
+					top: 50%;
+					transform: translate(0, -1px);
+				}
+
+				&:nth-of-type(3) {
+					bottom: 0;
+				}
+			}
+		}
+	}
+	.hmb-btn.active {
+		$this: &;
+        
+
+		.hmb-btn__hmb {
+            z-index: 1000;
+			span {
+				&:nth-of-type(1) {
+                    top: 50%;
+					transform: rotate(-45deg);
+					width: 80%;
+				}
+
+				&:nth-of-type(2) {
+					width: 50%;
+					opacity: 0!important;
+					/* 真ん中の線は透過 */
+				}
+
+				&:nth-of-type(3) {
+					top: 50%;
+					transform: rotate(45deg);
+					width: 80%;
+				}
+			}
+		}
+	}
+
+  .menu {
+		position: fixed;
+		top: 0;
+        left: -100%;
+		opacity: 0;
+		z-index: 997 !important;
+		width: 30%;
+		height: 100%;
+		transition: .8s;
+		pointer-events: none;
+        background: #fff;
+        
+        
+        
+
+		&__list {
+			position: absolute;
+			transform: translate(-50%, -50%);
+			top: 50%;
+			left: 50%;
+
+			@include max-screen($bp-sp) {
+				transform: translate(-50%, 0);
+				top: auto;
+				margin-top: 5rem;
+			}
+
+			li {
+				font-family: "Inter", sans-serif;
+				font-style: italic;
+				color: #000;
+				font-size: vw-pc(35);
+				text-align: center;
+				font-weight: bold;
+				line-height: 1;
+				padding-top: vw-pc(60);
+
+				@include max-screen($bp-sp) {
+					font-size: 1.7rem;
+					padding-top: 3.2rem;
+				}
+
+				span {
+					font-size: vw-pc(20);
+					font-weight: 400;
+
+					@include max-screen($bp-sp) {
+						font-size: 1.2rem;
+					}
+				}
+			}
+		}
+
+		&.open {
+			opacity: 1;
+			pointer-events: auto;
+            left: 0;
+		}
+	}
+
+    .menu-layer {
+        position: fixed;
+		top: 0;
+        left: -100%;
+		opacity: 0;
+		z-index: 996 !important;
+        background: rgba(0, 0, 0, 0.4);
+		width: 30%;
+		height: 100%;
+		transition: .5s;
+		pointer-events: none;
+
+        &.open {
+			opacity: 1;
+			pointer-events: auto;
+            left: 0;
+		}
+
+    }
+
+    //画面遷移スタイル
+    .stripes{
+        display: flex;
+        align-items: flex-start;
+        justify-content: right;
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        overflow: hidden;
+        pointer-events: none;
+    }
+    .stripeWrapper{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    @keyframes stripeFadeOut {
+        from { transform: translateY(0); }
+        to { transform: translateY(100%); }
+    }
+
+    .stripe {
+        background-color: #ff9326;
+        transform: translateY(0);
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .stripe-exit {
+        animation: stripeFadeOut 0.5s ease-in-out forwards;
+    }
+
+    .stripes-hidden {
+        display: none;
+    }
+
+    .content-wrapper {
+        // opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    .content-wrapper.visible {
+        opacity: 1;
+    }
+
+    // Layout styles
+    .wrap {
+        overflow: hidden;
+        position: relative;
+    }
+
+    .l-section {
+        margin: 8rem 0;
+
+        @include max-screen($bp-sp) {
+            margin: 4rem 0;
+        }
+    }
+
+    .xl-inner {
+        margin: 0 auto;
+        width: 1600px;
+
+        @include max-screen(1800px) {
+            width: 90%;
+        }
+
+        @include max-screen($bp-sp) {
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+    }
+
+    .l-inner {
+        margin: 0 auto;
+        width: $inner-width;
+
+        @include max-screen(1200px) {
+            width: 85%;
+        }
+
+        @include max-screen($bp-sp) {
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+    }
+
+    // Element styles
+    img {
+        height: auto;
+        max-height: 100%;
+        max-width: 100%;
+        vertical-align: middle;
+    }
+
+    sup {
+        font-size: 50%;
+        vertical-align: super;
+    }
+
+    // Animation styles
+    #background-animation-container {
+        height: 100%;
+        left: 0;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: -1000;
+    }
+
+    .ani-bubble {
+        border-radius: 50%;
+        height: 5px;
+        position: absolute;
+        left: 100%;
+        width: 5px;
+        animation: bubblemove 10s linear infinite;
+    }
+
+    @keyframes bubblemove {
+        from { left: 100%; }
+        to   { left: -100px; }
+    }
+</style>
+
+<script>
+	import gsap from "../scripts/gsap";
+    import { navigate } from 'astro:transitions/client';
+    import luxy from 'luxy.js';
+
+    function initHmbMenu() {
+        const hmbBtn = document.querySelector('.js-hmb-btn');
+        const menu = document.querySelector('.menu');
+        const menuLayer = document.querySelector('.menu-layer');
+        const body = document.body;
+
+        hmbBtn.addEventListener('click', () => {
+            hmbBtn.classList.toggle('active');
+            menu.classList.toggle('open');
+            menuLayer.classList.toggle('open');
+            body.classList.toggle('no-scroll');
+        });
+
+        // メニュー項目をクリックしたときにメニューを閉じる
+        const menuItems = document.querySelectorAll('.menu__list a');
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+            hmbBtn.classList.remove('active');
+            menu.classList.remove('open');
+            menuLayer.classList.remove('open');
+            body.classList.remove('no-scroll');
+            });
+        });
+        }
+
+    document.addEventListener('astro:page-load', () => {
+        setupBubbles();
+        initLuxy();
+
+        const bodyId = document.querySelector('body').getAttribute('data-pageid');
+        const isTop = bodyId === 'top';
+
+        if (!isTop) {
+            animatePageEntry();
+        }
+    });
+
+    document.addEventListener('astro:before-preparation', () => {
+        if (!isTop) {
+            // animatePageExit();
+        }
+    });
+
+    function animatePageEntry() {
+        const stripes = document.querySelectorAll('.stripe');
+        const stripesWrapper = document.querySelector('.stripes');
+        const contentWrapper = document.querySelector('.content-wrapper');
+        
+        stripesWrapper.classList.remove('stripes-hidden');
+        
+        stripes.forEach((stripe, index) => {
+            setTimeout(() => {
+            stripe.classList.add('stripe-exit');
+            }, index * 100);
+        });
+
+        setTimeout(() => {
+            contentWrapper.classList.add('visible');
+            stripesWrapper.classList.add('stripes-hidden');
+        }, stripes.length * 100 + 500); // アニメーション完了後、少し余裕を持たせて非表示に
+    }
+
+    // function animatePageExit() {
+    //     const stripes = document.querySelectorAll('.stripe');
+    //     const stripesWrapper = document.querySelector('.stripes');
+    //     const contentWrapper = document.querySelector('.content-wrapper');
+        
+    //     contentWrapper.classList.remove('visible');
+    //     stripesWrapper.classList.remove('stripes-hidden');
+        
+    //     stripes.forEach((stripe) => {
+    //         stripe.classList.remove('stripe-exit');
+    //     });
+    // }
+
+    // カスタムリンクの処理
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link && link.href && !link.target && !e.ctrlKey && !e.metaKey) {
+            e.preventDefault();
+            navigate(link.href);
+        }
+    });
+
+    const bubbleColors = [
+        'rgba(60, 179, 113, 0.2)', 
+        'rgba(0, 0, 255, 0.2)', 
+        'rgba(255,165,0, 0.2)'  
+    ];
+
+    function setupBubbles() {
+        const bubbles = document.querySelectorAll('.ani-bubble');
+        bubbles.forEach(bubble => {
+            const randomColor = bubbleColors[Math.floor(Math.random() * bubbleColors.length)];
+            const bubbleSize = (Math.floor(Math.random() * 9) + 2) * 5;
+
+            bubble.style.backgroundColor = randomColor;
+            bubble.style.boxShadow = `0 0 20px 10px ${randomColor}`;
+            bubble.style.opacity = Math.random() * 0.75;
+            bubble.style.width = `${bubbleSize}px`;
+            bubble.style.height = `${bubbleSize}px`;
+            bubble.style.borderRadius = `${bubbleSize / 2}px`;
+            bubble.style.top = `${Math.floor(Math.random() * 100)}%`;
+            bubble.style.animationDuration = `${Math.floor(Math.random() * 16) + 8}s`;
+            bubble.style.animationDelay = `${Math.floor(Math.random() * 8)}s`;
+        });
+    }
+
+    function handleOffscreenBubbles() {
+        const bubbles = document.querySelectorAll('.ani-bubble');
+        bubbles.forEach(bubble => {
+            if (isOffscreen(bubble)) {
+                const bubbleOffset = Math.floor((Math.random() * 140) - 19);
+                bubble.style.left = `${bubbleOffset}%`;
+            }
+        });
+    }
+
+    function isOffscreen(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+            rect.right < 0 ||
+            rect.bottom < 0 ||
+            rect.left > window.innerWidth ||
+            rect.top > window.innerHeight
+        );
+    }
+
+    function initLuxy() {
+        if (typeof luxy !== 'undefined') {
+            luxy.init({
+                wrapper: '#luxy',
+                targets: '.luxy-el',
+                wrapperSpeed: 0.08
+            });
+        } else {
+            console.error('luxy is not defined');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setupBubbles();
+        setInterval(handleOffscreenBubbles, 50);
+        initHmbMenu();
+        initLuxy();
+    });
+</script>

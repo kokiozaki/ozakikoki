@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Blog from './_Blog.astro';
+import Service from './_Service.astro';
+import About from './_About.astro';
+import Mv from './_Mv.astro';
+import { newtClient } from '../lib/newt'
+import type { Article } from '../lib/newt'
+
+const { items: articles } = await newtClient.getContents<Article>({
+  appUid: 'blog',
+  modelUid: 'article',
+  query: {
+    select: ['title', 'slug', 'body', '_id', 'meta', 'coverImage'],
+  },
+})
+
+console.log(articles)
+
+---
+
+<Layout pageId="top" title="Ozaki's Portfolio" description="大阪のWeb制作会社でフロントエンドエンジニアとして働く尾崎と申します。このサイトでは、Web開発における私の実績やスキル、および提供しているサービスについて紹介しています。デザインとパフォーマンスに注力し、クライアントのニーズに応じたオーダーメイドなソリューションを提供しています。詳細な自己紹介やポートフォリオを通じて、私の仕事に対する情熱と専門性をご覧いただけます。お仕事のご相談やご質問がありましたら、お気軽にお問い合わせください。">
+	<main>
+    <!-- <ul>
+      {
+        articles.map((article) => {
+          return (
+            <li>
+              <a href={`/blog/${article.slug}`}>{article.title}</a>
+            </li>
+          )
+        })
+      }
+    </ul> -->
+		<Mv />
+		<About />
+		<Service />
+		<Blog />
+	</main>
+</Layout>
+
+<style lang="scss">
+
+</style>
+
+<script>
+  if (typeof window !== "undefined") {
+    window.addEventListener('load', () => {
+      window.scrollTo(0, 0);
+    });
+
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) {
+        window.scrollTo(0, 0);
+      }
+    });
+  }
+</script>

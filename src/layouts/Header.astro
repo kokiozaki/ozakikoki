@@ -1,0 +1,190 @@
+---
+
+---
+
+<!-- <header id="header" class="header">
+  <div class="xl-inner">
+    <div class="header__inner">
+      <a href="/">
+        <img src="/assets/images/common/header.svg" width="206" height="45" alt="INSEL ART">
+      </a>
+
+      <div class="header__hmbbtn">
+        <div class="hmb-btn js-hmb-btn">
+          <div class="hmb-btn__inner">
+            <div class="hmb-btn__hmb">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header> -->
+
+
+<style lang="scss">
+	@import '../styles/vars.scss';
+	.header {
+		position: fixed;
+		padding: vw-pc(20) 0;
+		width: 100%;
+		background: transparent;
+		z-index: 999;
+
+
+		&__inner {
+			position: relative;
+		}
+
+		&__hmbbtn {
+			position: absolute;
+			top: 50%;
+			right: 0;
+			transform: translate(0, -50%);
+		}
+
+	}
+
+	.header--clone {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		transform: translateY(0%);
+		transition: 0.25s;
+
+		&.hidden {
+			transform: translateY(-100%);
+		}
+
+		&.is-top {
+			transform: translateY(-100%) !important;
+		}
+	}
+	.hmb-btn {
+		position: relative;
+		cursor: pointer;
+		height: 1.8rem;
+		width: 4.5rem;
+
+		&__inner {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		&__hmb {
+			position: relative;
+			height: 1.8rem;
+			width: 4.5rem;
+
+			span {
+				display: inline-block;
+				transition: all .5s;
+				/* アニメーションの設定 */
+				position: absolute;
+				left: 0;
+				height: 2px;
+				background: #D0121B;
+				width: 100%;
+
+				&:nth-of-type(1) {
+					top: 0;
+				}
+
+				&:nth-of-type(2) {
+					top: 50%;
+					transform: translate(0, -1px);
+				}
+
+				&:nth-of-type(3) {
+					bottom: 0;
+				}
+			}
+		}
+	}
+	.hmb-btn.active {
+		$this: &;
+
+		.hmb-btn__hmb {
+			span {
+				&:nth-of-type(1) {
+					top: 50%;
+					left: 10%;
+					transform: rotate(-45deg);
+					width: 80%;
+				}
+
+				&:nth-of-type(2) {
+					width: 50%;
+					opacity: 0;
+					/* 真ん中の線は透過 */
+				}
+
+				&:nth-of-type(3) {
+					top: 50%;
+					left: 10%;
+					transform: rotate(45deg);
+					width: 80%;
+				}
+			}
+		}
+	}
+	.menu {
+		position: fixed;
+		top: 0;
+		right: 0;
+		background: rgba(0, 0, 0, 0.8);
+		opacity: 0;
+		z-index: 998 !important;
+		width: 100%;
+		height: 100%;
+		transition: .5s;
+		pointer-events: none;
+
+		&__list {
+			position: absolute;
+			transform: translate(-50%, -50%);
+			top: 50%;
+			left: 50%;
+
+			@include max-screen($bp-sp) {
+				transform: translate(-50%, 0);
+				top: auto;
+				margin-top: 5rem;
+			}
+
+			li {
+				font-family: "Inter", sans-serif;
+				font-style: italic;
+				color: #fff;
+				font-size: vw-pc(35);
+				text-align: center;
+				font-weight: bold;
+				line-height: 1;
+				padding-top: vw-pc(60);
+
+				@include max-screen($bp-sp) {
+					font-size: 1.7rem;
+					padding-top: 3.2rem;
+				}
+
+				span {
+					font-size: vw-pc(20);
+					font-weight: 400;
+
+					@include max-screen($bp-sp) {
+						font-size: 1.2rem;
+					}
+				}
+			}
+		}
+
+		&.open {
+			opacity: 1;
+			pointer-events: auto;
+		}
+	}
+</style>

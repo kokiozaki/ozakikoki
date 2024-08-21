@@ -1,0 +1,377 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { newtClient } from '../../lib/newt'
+import type { Article } from '../../lib/newt'
+import { formatToJapaneseDate } from '../../scripts/utility';
+
+export const getStaticPaths = async () => {
+  const { items: articles } = await newtClient.getContents<Article>({
+    appUid: 'blog',
+    modelUid: 'article',
+  })
+  console.log('Fetched articles:', articles);
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }))
+}
+
+const { article } = Astro.props
+
+const createDate = formatToJapaneseDate(article._sys.createdAt);
+const updateDate = formatToJapaneseDate(article._sys.updatedAt);
+const isUpdate =  article._sys.createdAt !== article._sys.updatedAt;
+---
+
+<Layout pageId="column-single" title="記事詳細  | Ozaki's Portfolio" description="記事詳細ページです。">
+	<main>
+
+
+		<div class="l-section">
+			<div class="xl-inner">
+
+				<article class="article">
+					<div class="article-inner">
+
+            <ul class="article-nav">
+              <li>
+                <a href="/blog/">記事一覧</a>
+              </li>
+              <li>
+                {article.title}
+              </li>
+            </ul>
+	
+						{article.category?.length > 0 && (
+							<ul class="category">
+								{article.category.map((cat, i) => (
+									<li class="item">{cat.name}</li>
+								))}
+							</ul>
+						) }
+	
+						<div class="article-header">
+							<h1 class="ttl">
+								{article.title}
+							</h1>
+		
+							{article.coverImage?.src? (
+								<div class="thumbnail">
+									<img src={article.coverImage.src} alt="" />
+								</div>
+							) : null}
+	
+							<div class="date">
+								{isUpdate && (
+									<span class="update">
+										<i class="bi bi-arrow-clockwise"></i> {updateDate}
+									</span>
+								)}
+								<span class="create">
+									<i class="bi bi-clock-fill"></i> {createDate}
+								</span>
+							</div>
+	
+							
+						</div>
+						<section class="web-column-content">
+							<div set:html={article.body}></div>				
+						</section>
+						<div>
+							{article.prevArticle && (
+								<Link href={`/blog/${article.prevArticle.slug}`}>
+									<a>前の記事</a>
+								</Link>
+							)}
+							{article.nextArticle && (
+								<Link href={`/blog/${article.nextArticle.slug}`}>
+									<a>次の記事</a>
+								</Link>
+							)}
+						</div>
+					</div>
+				</article>
+	
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style lang="scss">
+	@import '../../styles/vars.scss';
+
+	.article {
+		margin: 4rem auto;
+	}
+	.article-inner {
+		background: rgba(255,255,255, 1);
+		border: 2px solid #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+		padding: 4rem;
+		position: relative;
+		max-width: 110rem;
+		margin: 0 auto;
+
+		@include max-screen($bp-sp) {
+			border: 1px solid #000;
+			-moz-box-shadow: -5px 5px 0px 0px rgba(0, 0, 0, 1);
+			-webkit-box-shadow: -5px 5px 0px 0px rgba(0, 0, 0, 1);
+			-ms-box-shadow: -5px 5px 0px 0px rgba(0, 0, 0, 1);
+			box-shadow: -5px 5px 0px 0px rgba(0, 0, 0, 1);
+			padding: 4rem 2rem 2rem;
+		}
+	}
+
+  .article-nav {
+    display: flex;
+    align-items: center;
+    margin-bottom: vw-pc(60);
+    li {
+      margin-right: vw-pc(40);
+      position: relative;
+      font-size: vw-pc(20);
+
+      &::after {
+        content: "";
+        width: vw-pc(15);
+        height: vw-pc(15);
+        border-top: 3px solid #ff9326;
+        border-right: 3px solid #ff9326;
+        transform: translateY(-50%) rotate(45deg);
+        position: absolute;
+        top: 50%;
+        right: vw-pc(-25);
+      }
+
+      &:last-of-type {
+        &::after {
+          content: none;
+
+        }
+      }
+    }
+  }
+
+	.article-header {
+		margin-bottom: 4rem;
+
+		@include max-screen($bp-sp) {
+			margin-bottom: 2rem;
+		}
+	}
+
+	.category {
+		position: absolute;
+		right: 0;
+		top: 0;
+		.item {
+			background: linear-gradient(145deg, #ff9326 0%, #f7d227 100%);
+			color: #fff;
+			font-size: 1.8rem;
+			padding: 0 1.5rem;
+			display: inline-block;
+
+			@include max-screen($bp-sp) {
+				font-size: 1.4rem;
+			}
+		}
+	}
+
+	.ttl {
+		font-size: 3.6rem;
+		margin-bottom: 4rem;
+
+		@include max-screen($bp-sp) {
+			font-size: 2rem;
+			margin-bottom: 2rem;
+		}
+	}
+
+	.thumbnail {
+		img {
+			height: 55rem;
+			object-fit: cover;
+			width: 100%;
+
+			@include max-screen($bp-sp) {
+				height: 18rem;
+			}
+		}
+	}
+
+	.date {
+		display: flex;
+		justify-content: right;
+		margin: 1rem 0;
+		font-size: 1.4rem;
+
+		@include max-screen($bp-sp) {
+			font-size: 1.2rem;
+		}
+
+		> span {
+			margin-left: 1rem;
+		}
+	}
+
+</style>
+
+<style is:global lang="scss">
+	@import '../../styles/vars.scss';
+	.web-column-content {
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			line-height: 1.25;
+			font-weight: bold;
+			margin: 3rem 0;
+			@include max-screen($bp-sp) {
+				margin: 2rem 0;
+			}
+		}
+		h4,
+		h5,
+		h6 {
+			font-size: 2rem;
+			padding: 1rem;
+
+			@include max-screen($bp-sp) {
+				font-size: 1.6rem;
+				padding: .5rem;
+			}
+		}
+		h1 {
+			font-size: 3.6rem;
+			@include max-screen($bp-sp) {
+				font-size: 2rem;
+			}
+		}
+		h2 {
+			font-size: 2.4rem;
+			padding: 2.5rem;
+			background-color: #ff9326;
+			border-radius: 2px;
+      color: #fff;
+
+			@include max-screen($bp-sp) {
+				font-size: 1.8rem;
+				padding: 1.5rem;
+			}
+		}
+		h3 {
+			border-left: 7px solid #ff9326;
+			border-right: 1px solid #ddd;
+			border-top: 1px solid #ddd;
+			border-bottom: 1px solid #ddd;
+			font-size: 2.2rem;
+			padding: 1.2rem 2rem;
+
+			@include max-screen($bp-sp) {
+				border-left: 4px solid #ff9326;
+				font-size: 1.6rem;
+				padding: .75rem 1rem;
+			}
+		}
+		h4 {
+			border-top: 2px solid #ff9326;
+			border-bottom: 2px solid #ff9326;
+
+			@include max-screen($bp-sp) {
+				border-width: 1px;
+			}
+		}
+		h5 {
+			border-bottom: 2px solid #ddd;
+
+			@include max-screen($bp-sp) {
+				border-width: 1px;
+			}
+		}
+		h6 {
+			border-bottom: 1px solid #ddd;
+
+			@include max-screen($bp-sp) {
+				border-width: 1px;
+			}
+		}
+		p {
+			margin-bottom: 2rem;
+
+			@include max-screen($bp-sp) {
+				margin-bottom: 1.5rem;
+			}
+		}
+
+		a {
+			color: #D0121B;
+			text-decoration: underline;
+		}
+
+		ul {
+			margin: 1em 0;
+			padding-left: 40px;
+			list-style-type: disc;
+
+			li {
+				list-style: inherit;
+			}
+		}
+
+		ol {
+			margin: 1em 0;
+			padding-left: 40px;
+			list-style-type: decimal;
+
+			li {
+				list-style: inherit;
+			}
+		}
+
+		pre, code {
+			background-color: #f5f5f5;
+			font-size: 1.4rem;
+			border-radius: 0;
+			overflow-x: auto;
+      margin: 1em 0;
+		}
+
+		pre {
+			display: block;
+			padding: 2rem;
+			line-height: 2.8rem;
+			word-break: break-word;
+		}
+
+		pre, pre>code {
+			background-color: #23241f !important;
+			color: #f8f8f2 !important;
+			border-radius: 4px !important;
+		}
+
+		table {
+			text-align: center;
+			width: 100%;
+			@include max-screen($bp-sp) {
+				font-size: 1.2rem;
+			}
+			th,
+			td {
+				border: 1px solid #ddd;
+				padding: 0.85rem 0.5rem;
+				vertical-align: middle;
+			}
+			th {
+				background: #f9f9f9;
+				font-weight: normal;
+			}
+			thead th {
+				background: #eee;
+			}
+		}
+		
+	}
+</style>

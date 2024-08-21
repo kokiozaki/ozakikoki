@@ -1,0 +1,87 @@
+---
+
+---
+
+<footer id="footer" class="footer">
+
+    <p class="footer__copy">© 2024 KOKI OZAKI All rights reserved.</p>
+
+</footer>
+
+<!-- <div id="js-pagetop" class="pagetop">
+  <i class="bi bi-chevron-up"></i>
+</div> -->
+
+<style lang="scss">
+	@import '../styles/vars.scss';
+	.footer {
+    background: #1d232a;
+
+    &__icon {
+        width: 9%;
+        height: 100%;
+
+        @include max-screen($bp-sp) {
+            width: 22%;
+            margin: 0 auto;
+        }
+    }
+
+    &__office {
+        display: flex;
+        gap: vw-pc(95);
+
+        @include max-screen($bp-sp) {
+            display: block;
+        }
+
+        ul {
+            font-size: vw-pc(24);
+
+            @include max-screen($bp-sp) {
+                font-size: 1.2rem;
+            }
+        }
+    }
+
+    &__osaka {
+        flex-shrink: 0;
+
+        @include max-screen($bp-sp) {
+            padding: 1.5rem 0;
+        }
+    }
+
+    &__copy {
+        text-align: center;
+        font-size: vw-pc(24);
+        padding-top: vw-pc(40);
+        padding-bottom: vw-pc(40);
+        color: #fff;
+
+        @include max-screen($bp-sp) {
+            font-size: 1.2rem;
+        }
+    }
+	}
+	.pagetop {
+		background: rgb(0 0 0 / 40%);
+		color: #fff;
+		font-size: 2.4rem;
+		line-height: 1;
+		padding: 0.5rem 2rem;
+		position: fixed;
+		bottom: 2rem;
+		right: 2rem;
+		z-index: 999;
+		cursor: pointer;
+		transition: .5s;
+		opacity: 0;
+		pointer-events: none;
+
+		&.active {
+			opacity: 1;
+			pointer-events: all;
+		}
+	}
+</style>

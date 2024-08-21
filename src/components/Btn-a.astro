@@ -1,0 +1,57 @@
+---
+interface Props {
+	text: string,
+	href: string
+}
+const {text, href} = Astro.props;
+---
+
+<a href={href} class="btn-A">{text}</a>
+
+<style lang="scss">
+	@import '../styles/vars.scss';
+	
+	.btn-A {
+		background-color: #fff;
+		border: 1px solid #000;
+		border-radius: 5rem;
+		padding: vw-pc(15) vw-pc(60) vw-pc(15) vw-pc(30);
+		position: relative;
+		font-size: vw-pc(20);
+		transition: .25s all;
+
+		@include max-screen($bp-sp) {
+			font-size: 1.4rem;
+			padding: 1rem 3.5rem 1rem 2rem;
+		}
+
+		&::after {
+			background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2227%22%20height%3D%2210%22%20viewBox%3D%220%200%2027%2010%22%20fill%3D%22none%22%3E%0A%3Cpath%20d%3D%22M0.563966%209.36452L26.436%209.36452L16.9995%200.635497%22%20stroke%3D%22black%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E');
+			position: absolute;
+			content: "";
+			width: vw-pc(26);
+			height: vw-pc(10);
+			background-size: contain;
+			background-repeat: no-repeat;
+			transform: translateY(-50%);
+			top: 48%;
+			right: vw-pc(15);
+
+			@include max-screen($bp-sp) {
+				width: 1.8rem;
+				height: 1rem;
+				right: 1rem;
+			}
+		}
+
+		&:hover {
+			background-color: #000;
+			color: #fff;
+		}
+
+		&:hover::after {
+			background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2227%22%20height%3D%2210%22%20viewBox%3D%220%200%2027%2010%22%20fill%3D%22none%22%3E%0A%3Cpath%20d%3D%22M0.563966%209.36452L26.436%209.36452L16.9995%200.635497%22%20stroke%3D%22white%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E');
+
+		}
+	}
+</style>

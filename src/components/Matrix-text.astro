@@ -1,0 +1,111 @@
+---
+
+---
+
+<span class="matrix-text">
+	<slot />
+</span>
+
+<style lang="scss">
+	@import '../styles/vars.scss';
+</style>
+
+<script>
+	const phrases = [
+		'デジタルの世界で<br>　アイデアを形にする',
+		'Giving shape to<br>　ideas in the digital world',
+		'在数字世界中实现创意',
+		'디지털 세상에서<br>　아이디어를 구체화하다',
+		'Придание формы<br>　идеям в цифровом мире',
+		'Dejitaru no sekai de<br>　aidea wo katatsi nisuru',
+	];
+	class TextScramble {
+		constructor(el) {
+			this.el = el;
+			this.chars = '!<>-_\\/[ゑ]{亜ゐ}—=+*^?#_【】?$)(@+%';
+			this.update = this.update.bind(this);
+		}
+
+		setText(newText) {
+			const oldText = this.el.innerText;
+			const length = Math.max(oldText.length, newText.length);
+			const promise = new Promise((resolve) => this.resolve = resolve);
+			this.queue = [];
+
+			for (let i = 0; i < length; i++) {
+				const from = oldText[i] || '';
+				const to = newText[i] || '';
+				const start = Math.floor(Math.random() * 40);
+				const end = start + Math.floor(Math.random() * 40);
+				this.queue.push({
+					from,
+					to,
+					start,
+					end
+				});
+			}
+
+			cancelAnimationFrame(this.frameRequest);
+			this.frame = 0;
+			this.update();
+			return promise;
+		}
+
+		update() {
+			let output = '';
+			let complete = 0;
+
+			for (let i = 0, n = this.queue.length; i < n; i++) {
+				let {
+					from,
+					to,
+					start,
+					end,
+					char
+				} = this.queue[i];
+
+				if (this.frame >= end) {
+					complete++;
+					output += to;
+				} else if (this.frame >= start) {
+					if (!char || Math.random() < 0.1) {
+						char = this.randomChar();
+						this.queue[i].char = char;
+					}
+					output += `<span class="matrix-text__dud">${char}</span>`;
+				} else {
+					output += from;
+				}
+			}
+
+			this.el.innerHTML = output;
+
+			if (complete === this.queue.length) {
+				this.resolve();
+			} else {
+				this.frameRequest = requestAnimationFrame(this.update);
+				this.frame++;
+			}
+		}
+
+		randomChar() {
+			return this.chars[Math.floor(Math.random() * this.chars.length)];
+		}
+	}	
+	const mvMatrix = () => {
+
+		const el = document.querySelector('.matrix-text');
+		const fx = new TextScramble(el);
+
+		let counter = 0;
+		const next = () => {
+			fx.setText(phrases[counter]).then(() => {
+				setTimeout(next, 2500);
+			});
+			counter = (counter + 1) % phrases.length;
+		};
+
+		next();
+	}
+	mvMatrix();
+</script>

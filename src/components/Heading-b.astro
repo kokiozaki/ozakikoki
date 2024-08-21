@@ -1,0 +1,94 @@
+---
+interface Props {
+	textEn: string,
+	firstColor: string
+	level?: number
+}
+
+const { textEn, firstColor, level } = Astro.props;
+const headingLevel = (level && level >= 1 && level <= 6) ? level : 1;
+
+const getHeadingTag = (level: number) => {
+  switch(level) {
+    case 1: return 'h1';
+    case 2: return 'h2';
+    case 3: return 'h3';
+    case 4: return 'h4';
+    case 5: return 'h5';
+    case 6: return 'h6';
+    default: return 'h1';
+  }
+}
+
+const Tag = getHeadingTag(headingLevel);
+
+---
+
+<Tag class="heading-B">
+	<span class="heading-B__en">{textEn}</span>
+</Tag>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const firstColor = "{firstColor}";
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .heading-B__en::first-letter {
+        color: ${firstColor};
+      }
+    `;
+    document.head.appendChild(style);
+  });
+</script>
+
+<style lang="scss">
+	@import '../styles/vars.scss';
+
+	.heading-B {
+		position: relative;
+		display: inline-grid;
+		grid-template-areas:
+			"accent heading"
+			"ja ja";
+		grid-area: heading;
+		text-align: center;
+		gap: 0.5rem;
+		color: #fff;
+		font-family: "Inter", sans-serif;
+		font-style: italic;
+		font-size: vw-pc(70);
+		line-height: 1;
+		text-shadow:
+			1px 1px 0 #000,
+			-1px 1px 0 #000,
+			-1px -1px 0 #000,
+			1px -1px 0 #000;
+
+		@include max-screen($bp-sp) {
+			font-size: 3.5rem;
+		}
+
+		&__en::first-letter {
+			grid-area: accent;
+			text-shadow: none;
+		}
+
+		&::before {
+			position: absolute;
+			background: url("/assets/images/common/heading-A_icon.svg") no-repeat center;
+			background-size: contain;
+			content: "";
+			width: vw-pc(250);
+			height: vw-pc(190);
+			transform: translateY(-50%);
+			top: 30%;
+			left: 0;
+			z-index: -1;
+
+			@include max-screen($bp-sp) {
+				width: 13rem;
+				height: 9rem;
+			}
+		}
+	}
+</style>
