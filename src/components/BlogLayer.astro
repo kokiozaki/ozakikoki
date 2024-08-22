@@ -43,9 +43,9 @@ const { items: articles } = await newtClient.getContents<Article>({
             </div>	
             <!-- <ColumnList data={articles} client:load /> -->
             
-            <ul class="swiper-wrapper">
+            <ul class="column__content js-column">
 							{articles.map((item) => (
-								<li class="swiper-slide column__card">
+								<li class="column__card">
 									<ColumnCard data={item} />
 								</li>
 							))}
@@ -203,6 +203,20 @@ const { items: articles } = await newtClient.getContents<Article>({
       font-size: vw-pc(25);
       margin-bottom: vw-pc(60);
     }
+  }
+
+  .column__content {
+    margin-top: vw-pc(80);
+    display: flex;
+    gap: vw-pc(50);
+    flex-wrap: wrap;
+    @include max-screen($bp-sp) {
+      margin-top: 2.5rem;
+    }
+  }
+
+  .columun__card {
+    width: calc(33.33% - vw-pc(35));
   }
 
   .blog-list {

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { vwPc, bpSp } from '../scripts/styleVariables';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import type { NewtColumnArticle } from '../lib/newt';
 import { formatToJapaneseDate } from '../scripts/utility';
 
@@ -29,6 +29,7 @@ const columnCardStyle = css`
     overflow: hidden;
     width: 100%;
     height: ${vwPc(250)};
+    position: relative;
 
     img {
       width: 100%;
@@ -36,8 +37,30 @@ const columnCardStyle = css`
       object-fit: cover;
       transition: transform 0.3s ease;
     }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: #000;
+      transform: translateX(100%);
+    }
   }
 
+  &.reveal .thumb .overlay {
+    animation: revealImage 0.8s ease-out forwards;
+  }
+
+  @keyframes revealImage {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0%);
+    }
+  }
 
   > a {
     display: flex;
@@ -117,6 +140,31 @@ const columnCardStyle = css`
 `;
 
 const ColumnCard: React.FC<Props> = ({ data }) => {
+  const cardRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObser(
+      (entries) => {
+        entries.forEach((entry) => {
+          if(entry.isIntersecting) {
+            entry.target.classList.add('reveal');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {threshold: 0.1}
+    );
+
+    if(cardRef.current) {
+      observer.observer(cardRef.current);
+    }
+
+    return() => {
+      if(cardRef.current) {
+        observer.unobserve(cardRef.current);
+      }
+    };
+  }, []);
 
   const defaultThumbnailSrc = '/assets/images/common/default-thumbnail-column.png';
   const createDate = formatToJapaneseDate(data._sys.createdAt);
@@ -124,14 +172,15 @@ const ColumnCard: React.FC<Props> = ({ data }) => {
   const isUpdate =  data._sys.createdAt !== data._sys.updatedAt;
   
   return (
-    <article className="column-card" css={columnCardStyle}>
+    <article className="column-card" css={columnCardStyle} ref={cardRef}>
       <a href={`/blog/${data.slug}`}>
         <div className="top">
           <figure className="thumb">
-          <img
-            src={data.coverImage?.src? `${data.coverImage.src}?width=782&height=450&fit=crop`: defaultThumbnailSrc }
-            alt={data.coverImage?.title? data.coverImage.title: ''} 
-          />
+            <img
+              src={data.coverImage?.src? `${data.coverImage.src}?width=782&height=450&fit=crop`: defaultThumbnailSrc }
+              alt={data.coverImage?.title? data.coverImage.title: ''} 
+            />
+            <div className="overlay"></div>
           </figure>
           {/* <p className="thumb-cate">{data.category[0].name}</p> */}
         </div>
