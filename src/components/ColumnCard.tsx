@@ -112,8 +112,8 @@ const columnCardStyle = css`
   }
 
   .category li {
-    background: #000;
-    color: #fff;
+    color: #3BAA8A;
+    border: 1px solid #3BAA8A;
     border-radius: 50px;
     font-size: ${vwPc(18)};
     display: inline-block;
