@@ -111,6 +111,11 @@
       transition: 0.3s;
       cursor: pointer;
 
+      @include max-screen($bp-sp) {
+        width: 4rem;
+        height: 4rem;
+      }
+
       &:hover {
         transform: translateY(-50%) rotate(90deg);
       }

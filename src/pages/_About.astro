@@ -60,6 +60,10 @@
         height: vw-pc(300);
         width: auto;
 
+        @include max-screen($bp-sp) {
+          height: 8rem;
+        }
+
         path {
           opacity: 0;
           transition: fill 0.5s ease;
@@ -73,6 +77,10 @@
       font-weight: 700;
       font-size: vw-pc(40);
       margin-bottom: vw-pc(80);
+
+      @include max-screen($bp-sp) {
+        font-size: 1.4rem;
+      }
     }
   }
 
@@ -87,6 +95,11 @@
     border-radius: 50%;
     overflow: hidden;
     cursor: pointer;
+
+    @include max-screen($bp-sp) {
+      width: 7rem;
+      height: 7rem;
+    }
 
     &::after {
       content: "";
@@ -104,6 +117,10 @@
       width: vw-pc(50);
       position: relative;
       z-index: 3;
+
+      @include max-screen($bp-sp) {
+        width: 2rem;
+      }
     }
 
     &.hover {
