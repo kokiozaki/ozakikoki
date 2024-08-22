@@ -3,20 +3,34 @@ import Layout from '../../layouts/Layout.astro'
 import { newtClient } from '../../lib/newt'
 import type { Article } from '../../lib/newt'
 import { formatToJapaneseDate } from '../../scripts/utility';
+import PrevNextNavigation from '../../components/PrevNextNavigation.astro';
 
 export const getStaticPaths = async () => {
   const { items: articles } = await newtClient.getContents<Article>({
     appUid: 'blog',
     modelUid: 'article',
+	query: {
+		order: ['-_sys.createdAt'],
+	},
   })
   console.log('Fetched articles:', articles);
-  return articles.map((article) => ({
+
+  const articlesIndex = articles.map((article, index) => ({
+	...article,
+	index,
+  }))
+
+  return articlesIndex.map((article) => ({
     params: { slug: article.slug },
-    props: { article },
+    props: { article, allArticles: articlesIndex },
   }))
 }
 
-const { article } = Astro.props
+const { article, allArticles } = Astro.props
+
+const currentIndex = article.index
+const prevArticle = allArticles[currentIndex + 1] || null
+const nextArticle = allArticles[currentIndex - 1] || null
 
 const createDate = formatToJapaneseDate(article._sys.createdAt);
 const updateDate = formatToJapaneseDate(article._sys.updatedAt);
@@ -33,14 +47,14 @@ const isUpdate =  article._sys.createdAt !== article._sys.updatedAt;
 				<article class="article">
 					<div class="article-inner">
 
-            <ul class="article-nav">
-              <li>
-                <a href="/blog/">記事一覧</a>
-              </li>
-              <li>
-                {article.title}
-              </li>
-            </ul>
+						<ul class="article-nav">
+						<li>
+							<a href="/blog/">記事一覧</a>
+						</li>
+						<li>
+							{article.title}
+						</li>
+						</ul>
 	
 						{article.category?.length > 0 && (
 							<ul class="category">
@@ -77,20 +91,10 @@ const isUpdate =  article._sys.createdAt !== article._sys.updatedAt;
 						<section class="web-column-content">
 							<div set:html={article.body}></div>				
 						</section>
-						<div>
-							{article.prevArticle && (
-								<Link href={`/blog/${article.prevArticle.slug}`}>
-									<a>前の記事</a>
-								</Link>
-							)}
-							{article.nextArticle && (
-								<Link href={`/blog/${article.nextArticle.slug}`}>
-									<a>次の記事</a>
-								</Link>
-							)}
-						</div>
 					</div>
 				</article>
+
+				<PrevNextNavigation prevArticle={prevArticle} nextArticle={nextArticle} />
 	
 			</div>
 		</div>

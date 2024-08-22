@@ -1,0 +1,30 @@
+---
+const { prevArticle, nextArticle } = Astro.props;
+---
+
+<nav class="prev-next-nav">
+  {prevArticle && (
+    <a href={`/blog/${prevArticle.slug}`} class="prev-article">
+      <span>前の記事</span>
+      <h3>{prevArticle.title}</h3>
+    </a>
+  )}
+  {nextArticle && (
+    <a href={`/blog/${nextArticle.slug}`} class="next-article">
+      <span>次の記事</span>
+      <h3>{nextArticle.title}</h3>
+    </a>
+  )}
+</nav>
+
+<style lang="scss">
+    @import '../styles/vars.scss';
+    .prev-next-nav {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 4rem;
+    }
+    .prev-article, .next-article {
+        flex: 0 0 48%;
+    }
+</style>
