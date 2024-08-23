@@ -40,6 +40,21 @@ export const formatToJapaneseDate = (dateString, delimiter = '.') => {
 };
 
 /**
+ * ISO 8601形式の日付文字列を指定された区切り文字を使用して'DD/MM/YYYY'形式にフォーマットします。
+ * @param {string} dateString - フォーマットする日付文字列。
+ * @param {string} delimiter - 使用する区切り文字。
+ * @returns {string} フォーマットされた日付文字列。
+ */
+export const formatToEuropeanDate = (dateString, delimiter = '/') => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月は0から始まるので+1
+  const year = date.getFullYear();
+  return `${day}${delimiter}${month}${delimiter}${year}`;
+};
+
+
+/**
  * スマホかどうかを判定する関数
  * @return {boolean} 767px以下の場合はtrue、それ以外はfalseを返す
  */

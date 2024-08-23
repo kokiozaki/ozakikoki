@@ -3,17 +3,21 @@ import { css } from '@emotion/react';
 import { vwPc, bpSp } from '../scripts/styleVariables';
 import React, { useEffect, useRef } from 'react';
 import type { NewtColumnArticle } from '../lib/newt';
-import { formatToJapaneseDate } from '../scripts/utility';
+import { formatToEuropeanDate, formatToJapaneseDate } from '../scripts/utility';
 
 interface Props {
   data: NewtColumnArticle;
 }
 
 const columnCardStyle = css`
-  border: 2px solid #000;
-  background-color: #fff;
+  // width: calc((100% - ${vwPc(50)}) / 2);
+  width: 100%;
+  // border: 2px solid #000;
+  background-color: #transparent;
   transition: .25s;
   height: 100%;
+  font-family: "Barlow", sans-serif;
+  font-weight: bold;
 
   @media screen and (max-width: ${bpSp}) {
     border: 1px solid #000;
@@ -28,7 +32,7 @@ const columnCardStyle = css`
   .thumb {
     overflow: hidden;
     width: 100%;
-    height: ${vwPc(250)};
+    height: ${vwPc(350)};
     position: relative;
 
     img {
@@ -91,11 +95,11 @@ const columnCardStyle = css`
   }
 
   .body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     padding: ${vwPc(20)} ${vwPc(30)};
+    padding-left: 0;
+    padding-bottom: 0;
     height: 100%;
+    line-height: 1.5;
 
     @media screen and (max-width:${bpSp}) {
       padding: 1rem;
@@ -103,7 +107,7 @@ const columnCardStyle = css`
   }
 
   .ttl {
-    font-size: ${vwPc(20)};
+    font-size: ${vwPc(30)};
 
     @media screen and (max-width:${bpSp}) {
       font-size: 1.4rem;
@@ -121,11 +125,9 @@ const columnCardStyle = css`
   }
 
   .date {
-    font-size: ${vwPc(16)};
-    text-align: right;
-    color: #ff9326;
+    font-size: ${vwPc(20)};
     font-weight: bold;
-
+    line-height: 1.5;
   }
 
   .arrow {
@@ -167,13 +169,27 @@ const ColumnCard: React.FC<Props> = ({ data }) => {
   }, []);
 
   const defaultThumbnailSrc = '/assets/images/common/default-thumbnail-column.png';
-  const createDate = formatToJapaneseDate(data._sys.createdAt);
+  const createDate = formatToEuropeanDate(data._sys.createdAt);
   const updateDate = formatToJapaneseDate(data._sys.updatedAt);
   const isUpdate =  data._sys.createdAt !== data._sys.updatedAt;
   
   return (
     <article className="column-card" css={columnCardStyle} ref={cardRef}>
       <a href={`/blog/${data.slug}`}>
+        <div className="body">
+          <p className="date">{createDate}</p>
+          <h3 className="ttl">{data.title}</h3>
+            {/* {data.category?.length > 0 && (
+							<ul className="category">
+								{data.category.map((cat, i) => (
+									<li className="item">{cat.name}</li>
+								))}
+							</ul>
+						) } */}
+          {/* <div className="arrow">
+            <img src="/assets/images/top/column-btn.svg" alt="" />
+          </div> */}
+        </div>
         <div className="top">
           <figure className="thumb">
             <img
@@ -184,20 +200,7 @@ const ColumnCard: React.FC<Props> = ({ data }) => {
           </figure>
           {/* <p className="thumb-cate">{data.category[0].name}</p> */}
         </div>
-        <div className="body">
-          <h3 className="ttl">{data.title}</h3>
-          {data.category?.length > 0 && (
-							<ul className="category">
-								{data.category.map((cat, i) => (
-									<li className="item">{cat.name}</li>
-								))}
-							</ul>
-						) }
-          <p className="date">{createDate}</p>
-          {/* <div className="arrow">
-            <img src="/assets/images/top/column-btn.svg" alt="" />
-          </div> */}
-        </div>
+        
       </a>
     </article>
     )
