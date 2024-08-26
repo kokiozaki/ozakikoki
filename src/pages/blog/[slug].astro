@@ -4,6 +4,8 @@ import { newtClient } from '../../lib/newt'
 import type { Article } from '../../lib/newt'
 import { formatToJapaneseDate } from '../../scripts/utility';
 import PrevNextNavigation from '../../components/PrevNextNavigation.astro';
+import PasswordProtectedContent from '../../components/Password.tsx';
+
 
 export const getStaticPaths = async () => {
   const { items: articles } = await newtClient.getContents<Article>({
@@ -13,7 +15,6 @@ export const getStaticPaths = async () => {
 		order: ['-_sys.createdAt'],
 	},
   })
-  console.log('Fetched articles:', articles);
 
   const articlesIndex = articles.map((article, index) => ({
 	...article,
@@ -35,6 +36,8 @@ const nextArticle = allArticles[currentIndex - 1] || null
 const createDate = formatToJapaneseDate(article._sys.createdAt);
 const updateDate = formatToJapaneseDate(article._sys.updatedAt);
 const isUpdate =  article._sys.createdAt !== article._sys.updatedAt;
+
+const hasPassword = article.password && article.password.trim() !== '';
 ---
 
 <Layout pageId="column-single" title="記事詳細  | Ozaki's Portfolio" description="記事詳細ページです。">
@@ -88,9 +91,13 @@ const isUpdate =  article._sys.createdAt !== article._sys.updatedAt;
 	
 							
 						</div>
+						{hasPassword ? (
+						<PasswordProtectedContent article={article} />
+						) : (
 						<section class="web-column-content">
-							<div set:html={article.body}></div>				
+							<div dangerouslySetInnerHTML={{ __html: article.body }}></div>
 						</section>
+						)}
 					</div>
 				</article>
 
