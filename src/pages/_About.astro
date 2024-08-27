@@ -158,7 +158,7 @@
             opacity: 1,
             y: 0,
             x: 0,
-            duration: 0.8,
+            duration: 0.5,
             delay: index * 0.1,
             scrub: true,
             ease: 'power2.out'
@@ -170,8 +170,9 @@
     function createTrigger(triggerClass, pathClass) {
       ScrollTrigger.create({
         trigger: `.${triggerClass}`,
-        start: "top 60%",
+        start: "top 70%",
         end: "bottom top",
+        once: true,
         onEnter: () => animateSVG(pathClass),
       });
     }

@@ -167,8 +167,8 @@
 
     function createTrigger(triggerClass, pathClass) {
       ScrollTrigger.create({
-        trigger: `.${triggerClass}`,
-        start: "top center",
+        trigger: `#${triggerClass}`,
+        start: "top 70%",
         end: "bottom top",
         onEnter: () => animateSVG(pathClass),
       });
