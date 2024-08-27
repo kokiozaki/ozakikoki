@@ -20,7 +20,6 @@ const columnCardStyle = css`
   font-weight: bold;
 
   @media screen and (max-width: ${bpSp}) {
-    border: 1px solid #000;
   }
 
     &:hover {
@@ -34,6 +33,10 @@ const columnCardStyle = css`
     width: 100%;
     height: ${vwPc(350)};
     position: relative;
+
+    @media screen and (max-width: ${bpSp}) {
+      height: 9rem;
+    }
 
     img {
       width: 100%;
@@ -59,10 +62,10 @@ const columnCardStyle = css`
 
   @keyframes revealImage {
     0% {
-      transform: translateX(100%);
+      transform: translateX(0%);
     }
     100% {
-      transform: translateX(0%);
+      transform: translateX(100%);
     }
   }
 
@@ -102,16 +105,15 @@ const columnCardStyle = css`
     line-height: 1.5;
 
     @media screen and (max-width:${bpSp}) {
-      padding: 1rem;
     }
   }
 
   .ttl {
-    font-size: ${vwPc(30)};
+    font-size: ${vwPc(28)};
+    margin-bottom: ${vwPc(20)};
 
     @media screen and (max-width:${bpSp}) {
-      font-size: 1.4rem;
-      padding-bottom: 1rem;
+      font-size: 1.2rem;
     }
   }
 
@@ -122,12 +124,16 @@ const columnCardStyle = css`
     font-size: ${vwPc(18)};
     display: inline-block;
     padding: 0 ${vwPc(20)};
+    
   }
 
   .date {
     font-size: ${vwPc(20)};
     font-weight: bold;
     line-height: 1.5;
+    @media screen and (max-width:${bpSp}) {
+      font-size: 1rem;
+    }
   }
 
   .arrow {
@@ -186,9 +192,6 @@ const ColumnCard: React.FC<Props> = ({ data }) => {
 								))}
 							</ul>
 						) } */}
-          {/* <div className="arrow">
-            <img src="/assets/images/top/column-btn.svg" alt="" />
-          </div> */}
         </div>
         <div className="top">
           <figure className="thumb">
