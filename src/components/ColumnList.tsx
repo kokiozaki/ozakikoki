@@ -28,43 +28,103 @@ const styles = css`
       }
 		}
 	}
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: ${vwPc(30)};
+    gap: ${vwPc(10)};
+
+    button {
+      margin: 0 ${vwPc(5)};
+      padding: ${vwPc(5)} ${vwPc(10)};
+      background-color: #f0f0f0;
+      border: none;
+      cursor: pointer;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+      .btn{
+      position: relative;
+      color: #FFF;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: 2px;
+      width: 40px;
+      height: 40px;
+      background: #000;
+      display: block;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .opt {
+      border-bottom: 1px solid #000;
+      background-color: transparent;
+      font-weight: bold;
+    }
+  }
 `;
 
 interface Props {
   data: NewtColumnArticle[];
 }
 
-const itemsPerPage = 6;
+const itemsPerPage = 3;
 const ColumnList: React.FC<Props> = ({ data }) => {
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const [max, setMax] = useState(itemsPerPage);
-  const [isMore, setIsMore] = useState(false)
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
-  useEffect(() => {
-    setIsMore(data.length > max);
-  }, [data, max])
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
 
   return (
     <div css={styles}>
       <ul className="column-card-list">
-        {data.map((item, i) => (
-          (i >= max ) ? null : (
-            <li key={i}>
-              <ColumnCard data={item} />
-            </li>
-          )
+        {currentItems.map((item, i) => (
+          <li key={i}>
+            <ColumnCard data={item} />
+          </li>
         ))}
       </ul>
-      <div className="u-align-c">
-        {( isMore ) ? (
-          <div onClick={()=>{
-              setMax(max + itemsPerPage);
-            }}>
-              <BtnA href='/blog/' text="一覧を見る" />
-            </div>
-        ): null}
-      </div>
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button 
+          className='opt'
+            onClick={() => handlePageChange(currentPage - 1)} 
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+            className='btn animation'
+              key={page}
+              onClick={() => handlePageChange(page)}
+              disabled={currentPage === page}
+            >
+              {page}
+            </button>
+          ))}
+          <button 
+            className='opt'
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

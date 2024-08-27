@@ -5,14 +5,26 @@ const { prevArticle, nextArticle } = Astro.props;
 <nav class="prev-next-nav">
   {prevArticle && (
     <a href={`/blog/${prevArticle.slug}`} class="prev-article">
-      <span>前の記事</span>
+      <span>Prev</span>
       <h3>{prevArticle.title}</h3>
+      <div class="img">
+        <img
+              src={prevArticle.coverImage?.src? `${prevArticle.coverImage.src}?width=782&height=450&fit=crop`: defaultThumbnailSrc }
+              alt={prevArticle.coverImage?.title? prevArticle.coverImage.title: ''} 
+            />
+      </div>
     </a>
   )}
   {nextArticle && (
     <a href={`/blog/${nextArticle.slug}`} class="next-article">
-      <span>次の記事</span>
+      <span>Next</span>
       <h3>{nextArticle.title}</h3>
+      <div class="img">
+        <img
+              src={nextArticle.coverImage?.src? `${nextArticle.coverImage.src}?width=782&height=450&fit=crop`: defaultThumbnailSrc }
+              alt={nextArticle.coverImage?.title? nextArticle.coverImage.title: ''} 
+            />
+      </div>
     </a>
   )}
 </nav>
@@ -23,8 +35,46 @@ const { prevArticle, nextArticle } = Astro.props;
         display: flex;
         justify-content: space-between;
         margin-top: 4rem;
+
+        span {
+          border-bottom: 1px solid #000;
+          background-color: transparent;
+          font-weight: bold;
+          padding: 0.5rem;
+          display: inline-block;
+          margin-bottom: 0.5rem;
+          margin: 0 auto 0.5rem;
+          text-align: center;
+        }
+
     }
     .prev-article, .next-article {
-        flex: 0 0 48%;
+        flex: 0 0 30%;
+        background: rgb(255, 255, 255);
+        border: 2px solid #000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+        padding: 1rem;
+        position: relative;
+
+        .img {
+            overflow: hidden;
+          }
+          img {
+            scale: 1;
+            transition: 0.3s;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+        &:hover {
+          .img {
+            overflow: hidden;
+          }
+          img {
+            scale: 1.05;
+            transition: 0.3s;
+          }
+        }
     }
 </style>

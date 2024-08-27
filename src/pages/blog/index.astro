@@ -20,7 +20,11 @@ const { items: articles } = await newtClient.getContents<Article>({
 					<div class="u-mb-m">
 					</div>	
 					<ColumnList data={articles} client:load />
-          			<BtnA href='../' text="TOPに戻る" />
+          			
+					<div class="u-align-c">
+						<BtnA href='../' text="TOPに戻る" />
+
+					</div>
 				</div>
 			</div>
 
@@ -32,7 +36,7 @@ const { items: articles } = await newtClient.getContents<Article>({
 	@import '../../styles/vars.scss';
 
 	.content-bg {
-		background-image: url(/assets/images/common/content-bg.png);
+		// background-image: url(/assets/images/common/content-bg.png);
 		background-size: auto;
 		background-repeat: repeat;
 
@@ -47,6 +51,10 @@ const { items: articles } = await newtClient.getContents<Article>({
 			padding-top: 4rem;
 			padding-bottom: 4rem;
 		}
+	}
+
+	.u-align-c {
+		margin-top: 5rem;
 	}
 
 </style>
