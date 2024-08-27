@@ -38,7 +38,7 @@ const { items: articles } = await newtClient.getContents<Article>({
       </p>
       <div class="blog__content">
         <div class="l-section">
-          <div class="xl-inner">
+          <div class="lcolumn__contentl-inner">
             <div class="u-mb-m">
             </div>	
             <!-- <ColumnList data={articles} client:load /> -->
@@ -207,11 +207,13 @@ const { items: articles } = await newtClient.getContents<Article>({
 
   .column__content {
     margin-top: vw-pc(80);
+    margin-bottom: vw-pc(80);
     display: flex;
     gap: vw-pc(50);
     flex-wrap: wrap;
     @include max-screen($bp-sp) {
       margin-top: 2.5rem;
+      margin-bottom: 2.5rem;
     }
   }
 

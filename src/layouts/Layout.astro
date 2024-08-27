@@ -429,6 +429,16 @@ const { pageId, title, description } = Astro.props;
         }
     }
 
+    .ll-inner {
+        margin: 0 auto;
+        width: 90%;
+
+        @include max-screen($bp-sp) {
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+    }
+
     .l-inner {
         margin: 0 auto;
         width: $inner-width;
