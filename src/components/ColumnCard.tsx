@@ -145,7 +145,7 @@ const ColumnCard: React.FC<Props> = ({ data }) => {
   const cardRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObser(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if(entry.isIntersecting) {
@@ -158,7 +158,7 @@ const ColumnCard: React.FC<Props> = ({ data }) => {
     );
 
     if(cardRef.current) {
-      observer.observer(cardRef.current);
+      observer.observe(cardRef.current);
     }
 
     return() => {

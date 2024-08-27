@@ -4,7 +4,6 @@ import Header from './Header.astro';
 import ServiceLayer from '../components/ServiceLayer.astro';
 import AboutLayer from '../components/AboutLayer.astro';
 import BlogLayer from '../components/BlogLayer.astro';
-import { ViewTransitions, slide } from 'astro:transitions';
 
 interface Props {
     pageId: string;
@@ -26,7 +25,6 @@ const { pageId, title, description } = Astro.props;
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <title>{title}</title>
-        <ViewTransitions />
 
         <!-- Open Graph tags -->
         <meta property="og:type" content="website" />
