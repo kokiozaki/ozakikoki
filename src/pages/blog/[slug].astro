@@ -4,7 +4,7 @@ import { newtClient } from '../../lib/newt'
 import type { Article } from '../../lib/newt'
 import { formatToJapaneseDate } from '../../scripts/utility';
 import PrevNextNavigation from '../../components/PrevNextNavigation.astro';
-import PasswordProtectedContent from '../../components/Password.tsx';
+import PasswordProtectedContent from '../../components/Password';
 
 
 export const getStaticPaths = async () => {
@@ -51,12 +51,12 @@ const hasPassword = article.password && article.password.trim() !== '';
 					<div class="article-inner">
 
 						<ul class="article-nav">
-						<li>
-							<a href="/blog/">記事一覧</a>
-						</li>
-						<li>
-							{article.title}
-						</li>
+							<li>
+								<a href="/blog/">記事一覧</a>
+							</li>
+							<li>
+								{article.title}
+							</li>
 						</ul>
 	
 						{article.category?.length > 0 && (
@@ -91,13 +91,15 @@ const hasPassword = article.password && article.password.trim() !== '';
 	
 							
 						</div>
-						{hasPassword ? (
-						<PasswordProtectedContent article={article} />
-						) : (
-						<section class="web-column-content">
-							<div dangerouslySetInnerHTML={{ __html: article.body }}></div>
-						</section>
-						)}
+						<div class="article-content">
+							{hasPassword ? (
+								<PasswordProtectedContent client:load article={article} />
+							) : (
+								<section class="web-column-content">
+								<div class="article-body" set:html={article.body} />
+								</section>
+							)}
+						</div>
 					</div>
 				</article>
 
