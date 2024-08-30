@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_2" data-name="2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #4b4b4b;
+      }
+    </style>
+  </defs>
+  <circle class="cls-1" cx="64" cy="64" r="64"/>
+  <circle class="cls-1" cx="256" cy="64" r="64"/>
+  <circle class="cls-1" cx="448" cy="64" r="64"/>
+  <circle class="cls-1" cx="64" cy="256" r="64"/>
+  <circle class="cls-1" cx="256" cy="256" r="64"/>
+  <circle class="cls-1" cx="448" cy="256" r="64"/>
+  <circle class="cls-1" cx="64" cy="448" r="64"/>
+  <circle class="cls-1" cx="256" cy="448" r="64"/>
+  <circle class="cls-1" cx="448" cy="448" r="64"/>
+</svg>

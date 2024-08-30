@@ -136,10 +136,10 @@ const hasPassword = article.password && article.password.trim() !== '';
 	}
 
 	.article-body {
-			img {
-				max-height: 40rem;
-				margin: 1em 0;
-			}
+		img {
+			max-height: 40rem;
+			margin: 1em 0;
+		}
 		}
 
   .article-nav {
@@ -236,77 +236,7 @@ const hasPassword = article.password && article.password.trim() !== '';
 
 	//ここから＝＝＝
 
-	.password-form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f2f5;
-  }
-
-  .password-form {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-
-  .input-group {
-    margin-bottom: 1rem;
-  }
-
-  .input-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: #333;
-  }
-
-  .password-input {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border-color 0.3s ease;
-  }
-
-  .password-input:focus {
-    outline: none;
-    border-color: #4a90e2;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-  }
-
-  .submit-button {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    color: white;
-    background-color: #4a90e2;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .submit-button:hover {
-    background-color: #357abd;
-  }
-
-  .error-message {
-    color: #e74c3c;
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
-  }
-
-  .content {
-    padding: 2rem;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+	
 
 //   ここまで＝＝＝＝＝＝＝＝＝＝＝
 
@@ -452,6 +382,10 @@ const hasPassword = article.password && article.password.trim() !== '';
 			border-radius: 4px !important;
 		}
 
+		img {
+			max-height: 40rem;
+		}
+
 		table {
 			text-align: center;
 			width: 100%;
@@ -472,6 +406,119 @@ const hasPassword = article.password && article.password.trim() !== '';
 				background: #eee;
 			}
 		}
-		
 	}
+
+	.password-form {
+  width: 320px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #2c3e50;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transform: perspective(1000px) rotateX(5deg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.password-form:hover {
+  transform: perspective(1000px) rotateX(0deg) translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.password-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.password-form label {
+  margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #ecf0f1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.password-form input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-bottom: 2px solid #3498db;
+  background: transparent;
+  color: #ecf0f1;
+  font-size: 18px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.password-form input[type="password"]:focus {
+  outline: none;
+  border-color: #e74c3c;
+  box-shadow: 0 4px 6px rgba(231, 76, 60, 0.1);
+}
+
+.password-form button {
+  padding: 15px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.password-form button:hover {
+  background-color: #c0392b;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.password-form button::after {
+  content: '→';
+  position: absolute;
+  top: 50%;
+  left: 70%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.password-form button:hover::after {
+  left: 85%;
+  opacity: 1;
+}
+
+.password-form p {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #e74c3c;
+  text-align: center;
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* 追加：遊び心のある要素 */
+.password-form::before {
+  content: '🔒';
+  font-size: 40px;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: transform 0.3s ease;
+}
+
+.password-form:hover::before {
+  transform: translateX(-50%) rotateY(180deg);
+}
+
 </style>
