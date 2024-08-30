@@ -5,25 +5,41 @@ const { prevArticle, nextArticle } = Astro.props;
 <nav class="prev-next-nav">
   {prevArticle && (
     <a href={`/blog/${prevArticle.slug}`} class="prev-article">
+      <div class="prev">
+
+      <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve">
+      <g>
+        <polygon class="st0" points="499.264,227.335 122.499,227.335 309.286,40.548 268.747,0 12.736,256 268.747,512 309.286,471.472 
+          122.499,284.665 499.264,284.665 	"></polygon>
+      </g>
+      </svg>
       <span>Prev</span>
-      <h3>{prevArticle.title}</h3>
-      <div class="img">
-        <img
-              src={prevArticle.coverImage?.src? `${prevArticle.coverImage.src}?width=782&height=450&fit=crop`: defaultThumbnailSrc }
-              alt={prevArticle.coverImage?.title? prevArticle.coverImage.title: ''} 
-            />
       </div>
     </a>
   )}
+  <a href="/blog/" class="all-article">
+    <svg id="_2" data-name="2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <circle class="cls-1" cx="64" cy="64" r="64"/>
+      <circle class="cls-1" cx="256" cy="64" r="64"/>
+      <circle class="cls-1" cx="448" cy="64" r="64"/>
+      <circle class="cls-1" cx="64" cy="256" r="64"/>
+      <circle class="cls-1" cx="256" cy="256" r="64"/>
+      <circle class="cls-1" cx="448" cy="256" r="64"/>
+      <circle class="cls-1" cx="64" cy="448" r="64"/>
+      <circle class="cls-1" cx="256" cy="448" r="64"/>
+      <circle class="cls-1" cx="448" cy="448" r="64"/>
+    </svg>
+  </a>
   {nextArticle && (
     <a href={`/blog/${nextArticle.slug}`} class="next-article">
-      <span>Next</span>
-      <h3>{nextArticle.title}</h3>
-      <div class="img">
-        <img
-              src={nextArticle.coverImage?.src? `${nextArticle.coverImage.src}?width=782&height=450&fit=crop`: defaultThumbnailSrc }
-              alt={nextArticle.coverImage?.title? nextArticle.coverImage.title: ''} 
-            />
+      <div class="next">
+        <span>Next</span>
+        <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve">
+        <g>
+          <polygon class="st0" points="243.253,0 202.714,40.539 389.5,227.335 12.736,227.335 12.736,284.665 389.5,284.665 
+            202.714,471.461 243.253,512 499.264,256 	"></polygon>
+        </g>
+        </svg>
       </div>
     </a>
   )}
@@ -31,11 +47,39 @@ const { prevArticle, nextArticle } = Astro.props;
 
 <style lang="scss">
     @import '../styles/vars.scss';
+    
+    .all-article {
+      width: vw-pc(50);
+      height: vw-pc(50);
+      cursor: pointer;
+      // position: absolute;
+
+      svg {
+        transition: 0.5s;
+      }
+      .cls-1 {
+          transition: 0.3s;
+        }
+
+      &:hover {
+        svg {
+          transform: scale(1.1);
+        }
+        .cls-1 {
+          fill: #ff9326;
+          transition: 0.2s;
+        }
+      }
+    }
     .prev-next-nav {
         display: flex;
-        justify-content: space-between;
+        display: grid;
+        column-gap: vw-pc(65);
+        grid-template-areas: "prev-article all-article next-article";
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
         margin-top: 4rem;
-
+        position: relative;
         span {
           border-bottom: 1px solid #000;
           background-color: transparent;
@@ -48,24 +92,53 @@ const { prevArticle, nextArticle } = Astro.props;
         }
 
     }
-    .prev-article, .next-article {
-        flex: 0 0 30%;
-        background: rgb(255, 255, 255);
-        border: 2px solid #000;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
-        padding: 1rem;
-        position: relative;
+    .prev-article {
+      text-align: right;
+      .prev {
+        display: inline-flex;
+        align-items: center;
+        gap: vw-pc(15);
 
-        .img {
-            overflow: hidden;
-          }
-          img {
-            scale: 1;
-            transition: 0.3s;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
+      }
+      &:hover {
+        svg {
+          transform: translateX(-5px);
+        }
+        .st0 {
+          fill: #ff9326;
+        }
+      }
+    }
+    .next-article {
+      text-align: left;
+      .next {
+        display: inline-flex;
+        align-items: center;
+        gap: vw-pc(15);
+
+      }
+      &:hover {
+        svg {
+          transform: translateX(5px);
+        }
+        .st0 {
+          fill: #ff9326;
+        }
+      }
+    }
+    .prev-article, .next-article {
+
+      .st0 {
+        transition: 0.3s;
+      }
+
+        svg {
+          width: vw-pc(40);
+          height: vw-pc(40);
+          transition: 0.3s;
+
+          
+        }
 
         &:hover {
           .img {

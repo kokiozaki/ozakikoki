@@ -73,7 +73,7 @@ interface Props {
   data: NewtColumnArticle[];
 }
 
-const itemsPerPage = 3;
+const itemsPerPage = 6;
 const ColumnList: React.FC<Props> = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1);
 

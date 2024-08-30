@@ -26,6 +26,10 @@ const columnCardStyle = css`
     .thumb img {
       transform: scale(1.05); 
     }
+      .st0 {
+        transition: 0.3s;
+          fill: #ff9326;
+        }
   }
 
   .thumb {
@@ -108,6 +112,33 @@ const columnCardStyle = css`
     }
   }
 
+  .body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .wrap {
+      width: 80%;
+    }
+
+    .arrow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      border-radius: 50%;
+      width: ${vwPc(70)};
+      height: ${vwPc(70)};
+
+      svg {
+        width: ${vwPc(30)};
+        height: ${vwPc(30)};
+      }
+        .st0 {
+        transition: 0.3s;
+        }
+    }
+  }
+
   .ttl {
     font-size: ${vwPc(28)};
     margin-bottom: ${vwPc(20)};
@@ -136,15 +167,6 @@ const columnCardStyle = css`
     }
   }
 
-  .arrow {
-    text-align: right;
-
-    @media screen and (max-width:${bpSp}) {
-      img {
-        width: 3rem;
-      }
-    }
-  }
 `;
 
 const ColumnCard: React.FC<Props> = ({ data }) => {
@@ -183,15 +205,18 @@ const ColumnCard: React.FC<Props> = ({ data }) => {
     <article className="column-card" css={columnCardStyle} ref={cardRef}>
       <a href={`/blog/${data.slug}`}>
         <div className="body">
-          <p className="date">{createDate}</p>
-          <h3 className="ttl">{data.title}</h3>
-            {/* {data.category?.length > 0 && (
-							<ul className="category">
-								{data.category.map((cat, i) => (
-									<li className="item">{cat.name}</li>
-								))}
-							</ul>
-						) } */}
+          <div className="wrap">
+            <p className="date">{createDate}</p>
+            <h3 className="ttl">{data.title}</h3>
+          </div>
+          <div className="arrow">
+            <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve">
+            <g>
+              <polygon class="st0" points="243.253,0 202.714,40.539 389.5,227.335 12.736,227.335 12.736,284.665 389.5,284.665 
+                202.714,471.461 243.253,512 499.264,256 	"></polygon>
+            </g>
+            </svg>
+          </div>
         </div>
         <div className="top">
           <figure className="thumb">
