@@ -138,6 +138,7 @@ const columnCardStyle = css`
         }
     }
   }
+  
 
   .ttl {
     font-size: ${vwPc(28)};
