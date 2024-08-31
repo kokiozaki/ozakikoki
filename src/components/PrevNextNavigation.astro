@@ -54,6 +54,11 @@ const { prevArticle, nextArticle } = Astro.props;
       cursor: pointer;
       // position: absolute;
 
+      @include max-screen($bp-sp) {
+        width: 3rem;
+        height: 3rem;
+      }
+
       svg {
         transition: 0.5s;
       }
@@ -80,6 +85,10 @@ const { prevArticle, nextArticle } = Astro.props;
         align-items: center;
         margin-top: 4rem;
         position: relative;
+
+        @include max-screen($bp-sp) {
+          gap: 2rem;
+        }
         span {
           border-bottom: 1px solid #000;
           background-color: transparent;

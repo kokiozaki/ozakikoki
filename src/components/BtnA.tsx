@@ -4,14 +4,6 @@ import { vwPc, bpSp } from '../scripts/styleVariables';
 import { css } from '@emotion/react';
 
 const btnAStyle = css`
-  // background-color: #fff;
-  // border: 1px solid #000;
-  // border-radius: 5rem;
-  // cursor: pointer;
-  // padding: ${vwPc(15)} ${vwPc(60)} ${vwPc(15)} ${vwPc(30)};
-  // position: relative;
-  // font-size: ${vwPc(20)};
-  // transition: 0.25s all;
 
   font-size: ${vwPc(20)};
   width: 150px;
@@ -31,6 +23,10 @@ const btnAStyle = css`
    7px 7px 20px 0px rgba(0,0,0,.1),
    4px 4px 5px 0px rgba(0,0,0,.1);
   outline: none;
+
+  @media screen and (max-width:${bpSp}) {
+    font-size: 1.2rem;
+  }
 
   &.btn-16 {
     border: none;
