@@ -1,99 +1,272 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from 'react';
-import { vwPc, bpSp } from '../scripts/styleVariables';
+import React from 'react';
 import { css } from '@emotion/react';
 
 const btnAStyle = css`
-
-  font-size: ${vwPc(20)};
-  width: 150px;
-  text-align: center;
-  height: 40px;
-  color: #fff;
-  border-radius: 5px;
-  padding: 10px 25px;
-  font-family: "Barlow", sans-serif;
-  font-weight: bold;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  --line_color: #000;
+  --back_color: #fac398;
   position: relative;
-  display: inline-block;
-   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
-   7px 7px 20px 0px rgba(0,0,0,.1),
-   4px 4px 5px 0px rgba(0,0,0,.1);
-  outline: none;
+  z-index: 0;
+  width: 240px;
+  height: 56px;
+  text-decoration: none;
+  font-size: 14px; 
+  font-weight: bold;
+  color: var(--line_color);
+  letter-spacing: 2px;
+  transition: all .3s ease;
 
-  @media screen and (max-width:${bpSp}) {
-    font-size: 1.2rem;
+  &.button {
+    display: inline-block;
   }
 
-  &.btn-16 {
-    border: none;
-    color: #000;
-  }
-  &.btn-16:after {
-    position: absolute;
-    content: "";
-    width: 0;
-    height: 100%;
-    top: 0;
-    left: 0;
-    direction: rtl;
-    z-index: -1;
-    box-shadow:
-    -7px -7px 20px 0px #fff9,
-    -4px -4px 5px 0px #fff9,
-    7px 7px 20px 0px #0002,
-    4px 4px 5px 0px #0001;
-    transition: all 0.3s ease;
-  }
-  &.btn-16:hover {
-    color: #000;
-  }
-  &.btn-16:hover:after {
-    left: auto;
-    right: 0;
+  .button__text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-  }
-  &.btn-16:active {
-    top: 2px;
+    height: 100%;
   }
 
+  &::before,
+  &::after,
+  .button__text::before,
+  .button__text::after {
+    content: '';
+    position: absolute;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--line_color);
+    transition: all .5s ease;
+  }
+
+  &::before {
+    top: 0;
+    left: 54px;
+    width: calc(100% - 56px * 2 - 16px);
+  }
+
+  &::after {
+    top: 0;
+    right: 54px;
+    width: 8px;
+  }
+
+  .button__text::before {
+    bottom: 0;
+    right: 54px;
+    width: calc(100% - 56px * 2 - 16px);
+  }
+
+  .button__text::after {
+    bottom: 0;
+    left: 54px;
+    width: 8px;
+  }
+
+  .button__line {
+    position: absolute;
+    top: 0;
+    width: 56px;
+    height: 100%;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 150%;
+      height: 100%;
+      box-sizing: border-box;
+      border-radius: 300px;
+      border: solid 3px var(--line_color);
+    }
+
+    &:nth-of-type(1),
+    &:nth-of-type(1)::before {
+      left: 0;
+    }
+
+    &:nth-of-type(2),
+    &:nth-of-type(2)::before {
+      right: 0;
+    }
+  }
+
+  &:hover {
+    letter-spacing: 6px;
+
+    &::before,
+    .button__text::before {
+      width: 8px;
+    }
+
+    &::after,
+    .button__text::after {
+      width: calc(100% - 56px * 2 - 16px);
+    }
+
+    .button__drow1 {
+      animation: drow1 ease-in .06s forwards;
+    }
+
+    .button__drow1::before {
+      animation: drow2 linear .08s .06s forwards;
+    }
+
+    .button__drow1::after {
+      animation: drow3 linear .03s .14s forwards;
+    }
+
+    .button__drow2 {
+      animation: drow4 linear .06s .2s forwards;
+    }
+
+    .button__drow2::before {
+      animation: drow3 linear .03s .26s forwards;
+    }
+
+    .button__drow2::after {
+      animation: drow5 linear .06s .32s forwards;
+    }
+  }
+
+  .button__drow1,
+  .button__drow2 {
+    position: absolute;
+    z-index: -1;
+    border-radius: 16px;
+    transform-origin: 16px 16px;
+  }
+
+  .button__drow1 {
+    top: -16px;
+    left: 40px;
+    width: 32px;
+    height: 0;
+    transform: rotate(30deg);
+  }
+
+  .button__drow2 {
+    top: 44px;
+    left: 77px;
+    width: 32px;
+    height: 0;
+    transform: rotate(-127deg);
+  }
+
+  .button__drow1::before,
+  .button__drow1::after,
+  .button__drow2::before,
+  .button__drow2::after {
+    content: '';
+    position: absolute;
+  }
+
+  .button__drow1::before {
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 32px;
+    border-radius: 16px;
+    transform-origin: 16px 16px;
+    transform: rotate(-60deg);
+  }
+
+  .button__drow1::after {
+    top: -10px;
+    left: 45px;
+    width: 0;
+    height: 32px;
+    border-radius: 16px;
+    transform-origin: 16px 16px;
+    transform: rotate(69deg);
+  }
+
+  .button__drow2::before {
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 32px;
+    border-radius: 16px;
+    transform-origin: 16px 16px;
+    transform: rotate(-146deg);
+  }
+
+  .button__drow2::after {
+    bottom: 26px;
+    left: -40px;
+    width: 0;
+    height: 32px;
+    border-radius: 16px;
+    transform-origin: 16px 16px;
+    transform: rotate(-262deg);
+  }
+
+  .button__drow1,
+  .button__drow1::before,
+  .button__drow1::after,
+  .button__drow2,
+  .button__drow2::before,
+  .button__drow2::after {
+    background: var(--back_color);
+  }
+
+  @keyframes drow1 {
+    0%   { height: 0; }
+    100% { height: 100px; }
+  }
+
+  @keyframes drow2 {
+    0%   { width: 0; opacity: 0; }
+    10%  { opacity: 0; }
+    11%  { opacity: 1; }
+    100% { width: 120px; }
+  }
+
+  @keyframes drow3 {
+    0%   { width: 0; }
+    100% { width: 80px; }
+  }
+
+  @keyframes drow4 {
+    0%   { height: 0; }
+    100% { height: 120px; }
+  }
+
+  @keyframes drow5 {
+    0%   { width: 0; }
+    100% { width: 124px; }
+  }
 `;
 
 interface Props {
   text: string;
   href?: string;
-  more?: boolean;
 }
 
-const BtnA: React.FC<Props> = ({ text, href, more }) => {
-
-  const className = more ? 'btn-A more custom-btn btn-16' : 'btn-A custom-btn btn-16';
-
+const BtnA: React.FC<Props> = ({ text, href }) => {
   if (href) {
     return (
-      <a href={href} css={btnAStyle} className={className}>
-        {text}
+      <a href={href} css={btnAStyle} className="button type--A">
+        <div className="button__line"></div>
+        <div className="button__line"></div>
+        <span className="button__text">{text}</span>
+        <div className="button__drow1"></div>
+        <div className="button__drow2"></div>
       </a>
     );
   } else {
-    if (more) {
-      return (
-        <button css={btnAStyle} className='btn-A more custom-btn btn-16'>
-          {text}
-        </button>
-      );
-    } else {
-      return (
-        <button css={btnAStyle} className='btn-A custom-btn btn-16'>
-          {text}
-        </button>
-      );
-    }
+    return (
+      <button css={btnAStyle} className="button type--A">
+        <div className="button__line"></div>
+        <div className="button__line"></div>
+        <span className="button__text">{text}</span>
+        <div className="button__drow1"></div>
+        <div className="button__drow2"></div>
+      </button>
+    );
   }
 }
 
 export default BtnA;
-
