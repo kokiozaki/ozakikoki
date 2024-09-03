@@ -1,0 +1,63 @@
+---
+import ColumnList from '../../components/ColumnList';
+import Layout from '../../layouts/Layout.astro'
+import { newtClient } from '../../lib/newt'
+import type { Article } from '../../lib/newt'
+import BtnA from '../../components/BtnA';
+
+const { items: articles } = await newtClient.getContents<Article>({
+  appUid: 'blog',
+  modelUid: 'article',
+})
+---
+
+<Layout pageId="contact" title="お問い合わせ | Ozaki's Portfolio" description="お問い合わせフォーム">
+	<main>
+
+		<div>
+			<h1>Contact us</h1>
+			<form action="https://portfolio-688145.form.newt.so/v1/eHDsTsNsc" method="post">
+			<label for="name">
+				Name
+				<input id="name" name="name" />
+			</label>
+			<label for="email">
+				Email
+				<input id="email" name="email" type="email" />
+			</label>
+			<label for="message">
+				Message
+				<textarea id="message" name="message"></textarea>
+			</label>
+			<button type="submit">Submit</button>
+			</form>
+		</div>
+	</main>
+</Layout>
+
+<style lang="scss">
+	@import '../../styles/vars.scss';
+
+	.content-bg {
+		// background-image: url(/assets/images/common/content-bg.png);
+		background-size: auto;
+		background-repeat: repeat;
+
+	}
+
+	.l-section {
+		margin: 0;
+		padding-top: 8rem;
+		padding-bottom: 8rem;
+
+		@include max-screen($bp-sp) {
+			padding-top: 4rem;
+			padding-bottom: 4rem;
+		}
+	}
+
+	.u-align-c {
+		margin-top: 5rem;
+	}
+
+</style>
