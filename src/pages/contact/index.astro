@@ -1,63 +1,237 @@
 ---
-import ColumnList from '../../components/ColumnList';
-import Layout from '../../layouts/Layout.astro'
-import { newtClient } from '../../lib/newt'
-import type { Article } from '../../lib/newt'
-import BtnA from '../../components/BtnA';
+import ColumnList from "../../components/ColumnList";
+import Layout from "../../layouts/Layout.astro";
+import { newtClient } from "../../lib/newt";
+import type { Article } from "../../lib/newt";
 
 const { items: articles } = await newtClient.getContents<Article>({
-  appUid: 'blog',
-  modelUid: 'article',
-})
+  appUid: "blog",
+  modelUid: "article",
+});
 ---
 
-<Layout pageId="contact" title="お問い合わせ | Ozaki's Portfolio" description="お問い合わせフォーム">
-	<main>
-
-		<div>
-			<h1>Contact us</h1>
-			<form action="https://portfolio-688145.form.newt.so/v1/eHDsTsNsc" method="post">
-			<label for="name">
-				Name
-				<input id="name" name="name" />
-			</label>
-			<label for="email">
-				Email
-				<input id="email" name="email" type="email" />
-			</label>
-			<label for="message">
-				Message
-				<textarea id="message" name="message"></textarea>
-			</label>
-			<button type="submit">Submit</button>
-			</form>
-		</div>
-	</main>
+<Layout
+  pageId="contact"
+  title="お問い合わせ | Ozaki's Portfolio"
+  description="お問い合わせフォーム"
+>
+  <main>
+    <div class="contact-container">
+      <h1 class="title">お問い合わせ</h1>
+      <form
+        action="https://portfolio-688145.form.newt.so/v1/eHDsTsNsc"
+        method="post"
+        class="contact-form"
+      >
+        <div class="form-group">
+          <input type="text" name="name" id="name" required />
+          <label for="name" class="floating-label">氏名</label>
+		  <span class="error-message" id="nameError"></span>
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" id="email" required />
+          <label for="email" class="floating-label">メールアドレス</label>
+		  <span class="error-message" id="emailError"></span>
+        </div>
+        <div class="form-group">
+          <textarea id="message" name="message" rows="4" required></textarea>
+          <label for="message" class="floating-label">本文</label>
+		  <div class="error-message" id="emailError"></div>
+        </div>
+        <button type="submit" class="submit-btn">送信</button>
+      </form>
+    </div>
+  </main>
 </Layout>
 
 <style lang="scss">
-	@import '../../styles/vars.scss';
+  @import "../../styles/vars.scss";
 
-	.content-bg {
-		// background-image: url(/assets/images/common/content-bg.png);
-		background-size: auto;
-		background-repeat: repeat;
+  .contact-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background: linear-gradient(145deg, #f0f0f0, #ffffff);
+    border-radius: 20px;
+    box-shadow:
+      20px 20px 60px #d0d0d0,
+      -20px -20px 60px #ffffff;
+  }
 
-	}
+  .title {
+    font-size: 2.5em;
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-	.l-section {
-		margin: 0;
-		padding-top: 8rem;
-		padding-bottom: 8rem;
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-		@include max-screen($bp-sp) {
-			padding-top: 4rem;
-			padding-bottom: 4rem;
+  .form-group {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    background-color: transparent;
+    transition: border-color 0.3s;
+    font-size: 16px;
+
+    &:focus {
+      outline: none;
+      border-color: #6a5acd;
+    }
+  }
+
+  .floating-label {
+    position: absolute;
+    pointer-events: none;
+    left: 10px;
+    top: 10px;
+    transition: 0.2s ease all;
+    color: #888;
+  }
+
+  input:focus ~ .floating-label,
+  input:not(:placeholder-shown) ~ .floating-label,
+  textarea:focus ~ .floating-label,
+  textarea:not(:placeholder-shown) ~ .floating-label {
+    top: -20px;
+    font-size: 14px;
+    color: #6a5acd;
+  }
+
+  .error-message {
+		color: #ff4136;
+		font-size: 12px;
+		margin-top: 5px;
+		display: block;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+
+		&.visible {
+			opacity: 1;
 		}
 	}
+  .submit-btn {
+    padding: 10px 20px;
+    background-color: #6a5acd;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 18px;
+    transition:
+      transform 0.3s,
+      box-shadow 0.3s;
 
-	.u-align-c {
-		margin-top: 5rem;
-	}
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(106, 90, 205, 0.3);
+    }
 
+    &:active {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 6px rgba(106, 90, 205, 0.3);
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translatey(0px);
+    }
+    50% {
+      transform: translatey(-10px);
+    }
+    100% {
+      transform: translatey(0px);
+    }
+  }
+
+  .contact-container {
+    animation: float 6s ease-in-out infinite;
+  }
 </style>
+
+<script>
+	// バリデーションの処理
+	document.addEventListener('DOMContentLoaded', (event) => {
+		const form = document.getElementById('contactForm');
+		const nameInput = document.getElementById('name');
+		const emailInput = document.getElementById('email');
+		const messageInput = document.getElementById('message');
+		const submitButton = form.querySelector('button[type="submit"]');
+
+		const nameError = document.getElementById('nameError');
+		const emailError = document.getElementById('emailError');
+		const messageError = document.getElementById('messageError');
+
+		function validateName() {
+			if (nameInput.ariaValueMax.trim() === '') {
+				showError(nameInput, nameError, '氏名を入力してください');
+				return false;
+			}
+			hideError(nameInput, nameError);
+			return true;
+		}
+
+		function validateEmail() {
+			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!emailRegex.test(emailInput.value)) {
+				showError(emailInput, emailError, '有効なメールアドレスを入力してください');
+				return false;
+			}
+			hideError(emailInput, emailError);
+			return true;
+		}
+
+		function validateMessage () {
+			if (messageInput.ariaValueMax.trim() === '') {
+				showError(messageInput, messageError, 'メッセージを入力してください');
+				return false;
+			}
+			hideError(messageInput, messageError);
+			return true;
+		}
+
+		function showError(input, errorElement, message) {
+			input.classList.add('error');
+			errorElement.textContent = message;
+			errorElement.classList.add('visible');
+		}
+
+		function hideError(input, errorElement) {
+			input.classList.remove('error');
+			errorElement.textContent = '';
+			errorElement.classList.remove('visible');
+		}
+
+		function validateForm() {
+			const isNameValid = validateName();
+			const isEmailValid = validateEmail();
+			const isMessageValid = validateMessage();
+			submitButton.disabled = !(isNameValid && isEmailValid && isMessageValid);
+		}
+
+		nameInput.addEventListener('input', validateForm);
+		emailInput.addEventListener('input', validateForm);
+		messageInput.addEventListener('input', validateForm);
+
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			if (validateName() && validateEmail() && validateMessage()) {
+				form.submit();
+			}
+		})
+	})
+</script>

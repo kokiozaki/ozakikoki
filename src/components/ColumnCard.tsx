@@ -213,7 +213,7 @@ const ColumnCard: React.FC<Props> = ({ data }) => {
           <div className="arrow">
             <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve">
             <g>
-              <polygon class="st0" points="243.253,0 202.714,40.539 389.5,227.335 12.736,227.335 12.736,284.665 389.5,284.665 
+              <polygon className="st0" points="243.253,0 202.714,40.539 389.5,227.335 12.736,227.335 12.736,284.665 389.5,284.665 
                 202.714,471.461 243.253,512 499.264,256 	"></polygon>
             </g>
             </svg>
