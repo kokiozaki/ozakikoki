@@ -1,13 +1,7 @@
 ---
-import ColumnList from "../../components/ColumnList";
+import BtnA from "../../components/BtnA.tsx";
 import Layout from "../../layouts/Layout.astro";
-import { newtClient } from "../../lib/newt";
-import type { Article } from "../../lib/newt";
 
-const { items: articles } = await newtClient.getContents<Article>({
-  appUid: "blog",
-  modelUid: "article",
-});
 ---
 
 <Layout
@@ -40,6 +34,10 @@ const { items: articles } = await newtClient.getContents<Article>({
         </div>
         <button type="submit" class="submit-btn">SEND</button>
       </form>
+      <div class="btn-wrap">
+        <BtnA text="TOP" href="../" />
+
+      </div>
     </div>
   </main>
 </Layout>
@@ -56,6 +54,11 @@ const { items: articles } = await newtClient.getContents<Article>({
     box-shadow:
       20px 20px 60px #d0d0d0,
       -20px -20px 60px #ffffff;
+
+    .btn-wrap {
+      text-align: center;
+      margin-top: vw-pc(60);
+    }
   }
 
   .title {
