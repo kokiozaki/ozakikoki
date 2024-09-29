@@ -28,7 +28,7 @@ const columnCardStyle = css`
     }
       .st0 {
         transition: 0.3s;
-          fill: #ff9326;
+          fill: #576ef0;
         }
   }
 
